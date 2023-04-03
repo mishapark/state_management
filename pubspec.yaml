@@ -37,6 +37,7 @@ dependencies:
   freezed: ^2.3.2
   get_it: ^7.2.0
   provider: ^6.0.5
+  flutter_riverpod: ^2.3.2
 
 dev_dependencies:
   flutter_test:
