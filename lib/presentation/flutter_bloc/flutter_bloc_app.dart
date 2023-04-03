@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:state_management/business/flutter_bloc/ItemBloc.dart';
+import 'package:state_management/business/flutter_bloc/item_bloc.dart';
 import 'package:state_management/business/flutter_bloc/events.dart';
 import 'package:state_management/business/flutter_bloc/state.dart';
 import 'package:state_management/presentation/components/item_card.dart';

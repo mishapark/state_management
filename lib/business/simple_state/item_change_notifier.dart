@@ -7,7 +7,6 @@ class CartAppState with ChangeNotifier {
   List<ItemData> cartItems = [];
 
   CartAppState() {
-    ServiceProvider.instance.initialize();
     _itemService = ServiceProvider.instance.get<ItemService>();
     _initItems();
   }

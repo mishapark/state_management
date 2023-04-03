@@ -8,7 +8,6 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
   late final ItemService _itemService;
 
   ItemBloc() : super(ItemLoadingState()) {
-    ServiceProvider.instance.initialize();
     _itemService = ServiceProvider.instance.get<ItemService>();
 
     on<LoadAllItems>((event, emit) async {

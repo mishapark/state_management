@@ -15,7 +15,6 @@ class ItemsNotifier extends StateNotifier<Map<ItemType, List<ItemData>>> {
           ItemType.allItems: [],
           ItemType.cartItems: [],
         }) {
-    ServiceProvider.instance.initialize();
     _itemService = ServiceProvider.instance.get<ItemService>();
     _initItems();
   }
