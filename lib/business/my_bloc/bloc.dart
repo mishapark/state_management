@@ -8,8 +8,8 @@ import 'state.dart';
 class ItemBloc {
   late final ItemService _itemService;
 
-  // final _stateController = StreamController<ItemState>.broadcast();
-  // final _eventController = StreamController<ItemEvent>.broadcast();
+  var _currentState = ItemState();
+
   final _stateController = StreamController<ItemState>.broadcast();
   final _eventController = StreamController<ItemEvent>();
 
@@ -27,24 +27,22 @@ class ItemBloc {
       final items = await _itemService.getItems();
       final cartItems = await _itemService.getCartItems();
 
-      _stateController.add(ItemLoadedState(items, cartItems));
+      _currentState =
+          _currentState.copyWith(items: items, cartItems: cartItems);
     }
     if (event is AddItemToCart) {
-      _stateController.add(ItemLoadingState());
       await _itemService.addItemToCart(item: event.item);
-      final items = await _itemService.getItems();
       final cartItems = await _itemService.getCartItems();
 
-      _stateController.add(ItemLoadedState(items, cartItems));
+      _currentState = _currentState.copyWith(cartItems: cartItems);
     }
     if (event is RemoveItemFromCart) {
-      _stateController.add(ItemLoadingState());
       await _itemService.removeItemFromCart(item: event.item);
-      final items = await _itemService.getItems();
       final cartItems = await _itemService.getCartItems();
 
-      _stateController.add(ItemLoadedState(items, cartItems));
+      _currentState = _currentState.copyWith(cartItems: cartItems);
     }
+    _stateController.add(_currentState);
   }
 
   void dispose() {

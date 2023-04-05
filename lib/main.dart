@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:state_management/data/index.dart';
-import 'package:state_management/presentation/flutter_redux/redux_app.dart';
+import 'package:state_management/presentation/my_bloc/my_bloc_app.dart';
 
 void main() {
   ServiceProvider.instance.initialize();
@@ -9,6 +9,6 @@ void main() {
   // runApp(const HooksApp());
   // runApp(const FlutterBlocApp());
   // runApp(const FlutterBlocCubitApp());
-  // runApp(const MyBlocApp());
-  runApp(ReduxApp());
+  runApp(const MyBlocApp());
+  // runApp(ReduxApp());
 }

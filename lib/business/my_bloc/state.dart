@@ -1,29 +1,35 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:state_management/data/index.dart';
 
-@immutable
-abstract class ItemState extends Equatable {}
-
-class ItemLoadingState extends ItemState {
-  @override
-  List<Object?> get props => [];
-}
-
-class ItemLoadedState extends ItemState {
+class ItemState {
   final List<ItemData> items;
   final List<ItemData> cartItems;
 
-  ItemLoadedState(this.items, this.cartItems);
+  ItemState({
+    this.items = const [],
+    this.cartItems = const [],
+  });
+
+  ItemState copyWith({
+    List<ItemData>? items,
+    List<ItemData>? cartItems,
+  }) {
+    return ItemState(
+      items: items ?? this.items,
+      cartItems: cartItems ?? this.cartItems,
+    );
+  }
 
   @override
-  List<Object?> get props => [items, cartItems];
-}
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ItemState &&
+          runtimeType == other.runtimeType &&
+          items == other.items &&
+          cartItems == other.cartItems;
 
-class ItemErrorState extends ItemState {
-  final String error;
-
-  ItemErrorState(this.error);
   @override
-  List<Object?> get props => [error];
+  int get hashCode => items.hashCode ^ cartItems.hashCode;
+
+  @override
+  String toString() => 'SpeakersState{speakers: $items, filter: $cartItems}';
 }

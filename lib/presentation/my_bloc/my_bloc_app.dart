@@ -33,9 +33,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    super.initState();
     bloc = ItemBloc();
     bloc.action.add(LoadAllItems());
+    super.initState();
   }
 
   @override
@@ -60,10 +60,13 @@ class _MyHomePageState extends State<MyHomePage> {
         child: StreamBuilder<ItemState>(
             stream: bloc.state,
             builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data is ItemLoadedState) {
-                var data = snapshot.data as ItemLoadedState;
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              }
+              if (snapshot.hasData) {
+                var data = snapshot.data;
                 return ListView(
-                  children: data.cartItems
+                  children: data!.cartItems
                       .map(
                         (item) => Card(
                           child: ListTile(
@@ -91,10 +94,10 @@ class _MyHomePageState extends State<MyHomePage> {
         child: StreamBuilder<ItemState>(
           stream: bloc.state,
           builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data is ItemLoadedState) {
-              var data = snapshot.data as ItemLoadedState;
+            if (snapshot.hasData) {
+              var data = snapshot.data;
               return ListView(
-                children: data.items
+                children: data!.items
                     .map(
                       (item) => ListTile(
                         title: ItemCard(
