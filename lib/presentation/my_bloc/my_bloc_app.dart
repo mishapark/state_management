@@ -46,58 +46,47 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        title: const Text('Simple State App'),
-        actions: [
-          IconButton(
-              onPressed: () => _scaffoldKey.currentState!.openEndDrawer(),
-              icon: const Icon(Icons.shopping_cart))
-        ],
-      ),
-      endDrawer: Drawer(
-        child: StreamBuilder<ItemState>(
-            stream: bloc.state,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              }
-              if (snapshot.hasData) {
-                var data = snapshot.data;
-                return ListView(
-                  children: data!.cartItems
-                      .map(
-                        (item) => Card(
-                          child: ListTile(
-                            leading: ConstrainedBox(
-                              constraints: const BoxConstraints(maxWidth: 80),
-                              child: Image.asset(item.image),
-                            ),
-                            title: Text(item.title),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () =>
-                                  bloc.action.add(RemoveItemFromCart(item)),
-                            ),
+    return StreamBuilder<ItemState>(
+      stream: bloc.state,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final data = snapshot.data;
+
+          return Scaffold(
+            key: _scaffoldKey,
+            appBar: AppBar(
+              title: const Text('Simple State App'),
+              actions: [
+                IconButton(
+                    onPressed: () => _scaffoldKey.currentState!.openEndDrawer(),
+                    icon: const Icon(Icons.shopping_cart))
+              ],
+            ),
+            endDrawer: Drawer(
+              child: ListView(
+                children: data!.cartItems
+                    .map(
+                      (item) => Card(
+                        child: ListTile(
+                          leading: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 80),
+                            child: Image.asset(item.image),
+                          ),
+                          title: Text(item.title),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () =>
+                                bloc.action.add(RemoveItemFromCart(item)),
                           ),
                         ),
-                      )
-                      .toList(),
-                );
-              } else {
-                return Container();
-              }
-            }),
-      ),
-      body: Center(
-        child: StreamBuilder<ItemState>(
-          stream: bloc.state,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              var data = snapshot.data;
-              return ListView(
-                children: data!.items
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+            body: Center(
+              child: ListView(
+                children: data.items
                     .map(
                       (item) => ListTile(
                         title: ItemCard(
@@ -110,13 +99,13 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )
                     .toList(),
-              );
-            } else {
-              return Container();
-            }
-          },
-        ),
-      ),
+              ),
+            ),
+          );
+        } else {
+          return const CircularProgressIndicator();
+        }
+      },
     );
   }
 }
